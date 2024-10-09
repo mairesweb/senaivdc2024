@@ -1,0 +1,76 @@
+<!-- Criar uma tela de login sofisticada e clean com os elementos no meio da tela -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>SA01</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #f1f1f1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .login-box {
+        width: 300px;
+        padding: 40px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
+      }
+      .login-box h2 {
+        color: #333;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+        font-weight: 500;
+      }
+      .textbox {
+        position: relative;
+        margin-bottom: 30px;
+      }
+      .textbox input {
+        width: 100%;
+        padding: 10px;
+        background: #f1f1f1;
+        border: none;
+        outline: none;
+        color: #333;
+        font-size: 18px;
+        border-radius: 5px;
+      }
+      button {
+        width: 100%;
+        background: #333;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        font-size: 18px;
+        color: #fff;
+        border-radius: 5px;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-box">
+      <h2>Gestor de Estoque</h2>
+      <form action="/login" method="POST">
+        <div class="textbox">
+          <input type="text" name="username" placeholder="Usuário" required />
+        </div>
+        <div class="textbox">
+          <input type="password" name="password" placeholder="Senha" required />
+        </div>
+        <button type="submit">Entrar</button>
+      </form>
+    </div>
+  </body>
+</html>
