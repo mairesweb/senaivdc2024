@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard de Produtos</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        padding: 10px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #218838;
+      }
+      .add {
+        float: right;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Dashboard de Produtos</h2>
+    <button class="add" onclick="adicionarProduto()">Adicionar Produto</button>
+    <table id="productsTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome do Produto</th>
+          <th>Quantidade</th>
+          <th>Custo</th>
+          <th>Preço</th>
+          <th>Lucro R$</th>
+          <th>Lucro %</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Produtos serão adicionados aqui dinamicamente -->
+      </tbody>
+    </table>
+
+    <script src="utils/NumbersUtils.js"></script>
+    <script src="utils/LocalStorage.js"></script>
+    <script src="utils/ColorsUtils.js"></script>
+    <script>
+      // Função para adicionar um novo produto ao localStorage
+      function adicionarProduto() {
+        const nome = prompt("Nome do produto:");
+        const quantidade = prompt("Quantidade do produto:");
+        const custo = prompt("Custo do produto:");
+        const preco = prompt("Preço do produto:");
+
+        if (nome && custo && preco) {
+          const produtos = JSON.parse(getItem("produtos")) || [];
+          const novoProduto = {
+            id: produtos.length + 1,
+            nome,
+            quantidade,
+            preco,
+            custo,
+            lucro: calcLucroBruto(preco, custo),
+            lucroPorcentagem: calcLucroPercentual(preco, custo),
+          };
+          produtos.push(novoProduto);
+          setItem("produtos", JSON.stringify(produtos));
+          renderizarProdutos();
+        }
+      }
+
+      // Função para renderizar os produtos na tabela
+      function renderizarProdutos() {
+        const produtos = JSON.parse(getItem("produtos")) || [];
+        const tbody = document.querySelector("#productsTable tbody");
+        tbody.innerHTML = ""; // Limpa a tabela antes de renderizar
+
+        produtos.forEach((produto) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td>${produto.id}</td>
+                    <td>${produto.nome}</td>
+                    <td>${produto.quantidade}</td>
+                    <td>R$ ${produto.custo}</td>
+                    <td>R$ ${produto.preco}</td>
+                    <td>R$ ${produto.lucro}</td>
+                    <td style="color: ${positiveOrNegativeColor(
+                      produto.lucroPorcentagem
+                    )}">${produto.lucroPorcentagem}%</td>
+                    <td><button onclick="removerProduto(${
+                      produto.id
+                    })">Remover</button></td>
+                `;
+          tbody.appendChild(row);
+        });
+      }
+
+      // Função para remover produto
+      function removerProduto(id) {
+        removeItemById("produtos", id);
+        renderizarProdutos();
+      }
+
+      // Carregar os produtos ao abrir a página
+      window.onload = () => {
+        renderizarProdutos();
+      };
+    </script>
+  </body>
+</html>
